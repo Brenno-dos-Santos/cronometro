@@ -1,6 +1,9 @@
 body{
     text-align: center;
     margin-top: 50px;
+    justify-content:center ;
+   
+    align-items: center;
 }
 button {
     margin: 5px;

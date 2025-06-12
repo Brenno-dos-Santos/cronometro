@@ -1,38 +1,49 @@
-let segundos =0;
+let segundos = 0;
+let milissegundos = 0;
 let intervalo = null;
-const display = document.getElementById("display")
-const Iniciar = document.getElementById("Iniciar")
-const Pausar = document.getElementById("Pausar")
-const Resetar = document.getElementById("Resetar")
 
-Iniciar.addEventListener("click",iniciarCronometro);
+const display = document.getElementById('display');
+const startBtn = document.getElementById('startBtn');
+const pauseBtn = document.getElementById('pauseBtn');
+const resetBtn = document.getElementById('resetBtn');
 
-function iniciarCronometro(){
-    if(intervalo)return;
+startBtn.addEventListener('click', iniciarCronometro);
+pauseBtn.addEventListener('click', pausarCronometro);
+resetBtn.addEventListener('click', resetarCronometro);
+
+function iniciarCronometro() {
+    if (intervalo) return; // Evita iniciar múltiplos cronômetros
+
     intervalo = setInterval(() => {
-        segundos++;
+        milissegundos += 10;
+        if (milissegundos >= 1000) {
+            milissegundos = 0;
+            segundos++;
+        }
         atualizaDisplay();
-    
-},1000);
+    }, 10);
 }
 
-Pausar.addEventListener("click",pararCronometro);
-function pararCronometro(){
+function pausarCronometro() {
     clearInterval(intervalo);
-    intervalo = null
+    intervalo = null; // Reseta o intervalo
+    atualizaDisplay(); // Atualiza o display para refletir a pausa
 }
-Resetar.addEventListener("click",resetarCronometro);
-function resetarCronometro(){
-    pararCronometro();
-    segundos =0;
-    atualizaDisplay();
-}
-function formatarTempo(segundosTotais){
- const minutos = Math.floor(segundosTotais/60);
- const segundos = segundosTotais%60;
- return `${String(minutos).padStart(2,'0')}:${String(segundos).padStart(2,'0')}`
 
+function resetarCronometro() {
+    pausarCronometro(); // Pausa o cronômetro se estiver rodando
+    segundos = 0; // Reseta os segundos
+    milissegundos = 0; // Reseta os milissegundos
+    atualizaDisplay(); // Atualiza o display para mostrar 00:00.000
 }
-function atualizaDisplay(){
-    display.textContent=formatarTempo(segundos)
+
+function formatarTempo(segundosTotais, milissegundos) {
+    const minutos = Math.floor(segundosTotais / 60);
+    const segundos = segundosTotais % 60;
+    const ms = Math.floor(milissegundos / 10); // Exibe apenas dois dígitos de milissegundos
+    return `${String(minutos).padStart(2, '0')}:${String(segundos).padStart(2, '0')}:${String(ms).padStart(2, '0')}`;
+}
+
+function atualizaDisplay() {
+    display.textContent = formatarTempo(segundos, milissegundos);
 }
