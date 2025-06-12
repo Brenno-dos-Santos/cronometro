@@ -1,7 +1,7 @@
 let segundos = 0;
 let milissegundos = 0;
 let intervalo = null;
-
+let MT
 const display = document.getElementById('display');
 const startBtn = document.getElementById('startBtn');
 const pauseBtn = document.getElementById('pauseBtn');
@@ -47,3 +47,10 @@ function formatarTempo(segundosTotais, milissegundos) {
 function atualizaDisplay() {
     display.textContent = formatarTempo(segundos, milissegundos);
 }
+const cores = ['#950101','#335548','#11114E'];
+let indice = 0;
+
+document.getElementById('MT').onclick = function() {
+  document.body.style.backgroundColor = cores[indice];
+  indice = (indice + 1) % cores.length;
+};
